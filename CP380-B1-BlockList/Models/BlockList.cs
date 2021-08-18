@@ -24,14 +24,26 @@ namespace CP380_B1_BlockList.Models
 
         public void AddBlock(Block block)
         {
-            // TODO
+            block.PreviousHash = Chain[Chain.Count - 1].Hash;
+            block.Mine(Difficulty);
+
+            Chain.Add(block);
         }
 
         public bool IsValid()
         {
-            // TODO
+            string hash = new String('C', Difficulty);
+            int error = 0;
+            for (int i = 1; i < Chain.Count; i++)
+            {
+                string block = Chain[i].Hash;
+                if (block.Substring(0, Difficulty) != hash ) 
+                { return false; }
+                if (Chain[i].PreviousHash != Chain[i - 1].Hash)
+                { return false; }
 
-            return false;
+            }
+            return true;
         }
     }
 }
